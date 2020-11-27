@@ -19,16 +19,17 @@ export const FlatListComp = ({ data, children, style, ...props }) => {
   return (
     !!data?.length &&
     Array.isArray(data) && (
-      <View style={style}>
-        <FlatList
-          data={data}
-          keyExtractor={(item) => item?.id?.toString()}
-          {...flatListProps}
-          renderItem={({ item }) => (
-            <ItemProvider value={item}>{children}</ItemProvider>
-          )}
-        />
-      </View>
+      <FlatList
+        data={data}
+        keyExtractor={(item) => item?.id?.toString()}
+        {...(numColumns > 1 && {
+          columnWrapperStyle: { flex: 1, justifyContent: "space-around" }
+        })}
+        {...flatListProps}
+        renderItem={({ item }) => (
+          <ItemProvider value={item}>{children}</ItemProvider>
+        )}
+      />
     )
   )
 }

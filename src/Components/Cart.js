@@ -18,10 +18,10 @@ export const CartItem = ({ children }) => {
   )
 }
 
-export const Cart = ({ children, postType, priceField, ...props }) => {
+export const Cart = ({ children }) => {
   return (
     <View style={{ flex: 1 }}>
-      <CartRoot postType={postType} priceField={priceField}>
+      <CartRoot postType="product" priceField="price">
         {children}
       </CartRoot>
     </View>

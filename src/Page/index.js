@@ -37,6 +37,8 @@ const Page = ({ navigation, route, page }) => {
   const json = page?.json
   const dataJson = json && JSON.parse(json)
 
+  console.log({ page, route })
+
   React.useLayoutEffect(() => {
     const params = route.params
     const title = params?.item?.title?.rendered ?? params?.item?.name
@@ -45,33 +47,7 @@ const Page = ({ navigation, route, page }) => {
     }
   }, [navigation, route])
 
-  return buildComponent("ROOT", dataJson) || null
-
-  // if (pages?.[index]?.showHeaderBar) {
-  //   return (
-  //     <ScrollView
-  //       contentContainerStyle={{ flexGrow: 1 }}
-  //       // refreshControl={
-  //       //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-  //       // }
-  //     >
-  //       {buildComponent("ROOT", data) || null}
-  //     </ScrollView>
-  //   )
-  // }
-
-  // return (
-  //   <SafeAreaView style={{ flex: 1 }}>
-  //     <ScrollView
-  //       contentContainerStyle={{ flexGrow: 1 }}
-  //       // refreshControl={
-  //       //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-  //       // }
-  //     >
-  //       {buildComponent("ROOT", data) || null}
-  //     </ScrollView>
-  //   </SafeAreaView>
-  // )
+  return dataJson ? buildComponent("ROOT", dataJson) : null
 }
 
 export default Page

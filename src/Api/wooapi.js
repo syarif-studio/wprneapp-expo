@@ -1,5 +1,5 @@
-import WooCommerceRestApi from "./WoocommerceApi"
-//import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api"
+//import WooCommerceRestApi from "./WoocommerceApi"
+import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api"
 import { config } from "../../config"
 
 const wooapiConfig = {

@@ -14,16 +14,21 @@ import useSWR from "swr"
 import Page from "../Page"
 
 function getOptions(route, pages) {
-  const routeName = getFocusedRouteNameFromRoute(route) ?? "page-0"
-  const index = routeName.split("-")[1]
-  const params = route.params
+  const routeName = getFocusedRouteNameFromRoute(route)
+  const index = pages.findIndex(
+    (page) => page.slug === routeName?.replace("tab-", "")
+  )
 
-  const title =
-    params?.item?.title?.rendered ??
-    params?.item?.name ??
-    (pages?.[index]?.name || "")
-  const headerShown = pages?.[index].showHeaderBar
+  if (index === -1) return false
 
+  let title = pages[index]?.name || ""
+
+  if (pages[index]?.dynamicTitle) {
+    const params = route.params
+    title = params?.item?.title?.rendered ?? params?.item?.name
+  }
+
+  const headerShown = pages?.[index]?.showHeaderBar
   return { title, headerShown }
 }
 
@@ -47,7 +52,9 @@ function BottomBar({ navigation, route, pages }) {
       lazy={false}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused }) => {
-          const index = route.name.split("-")[1]
+          const index = pages.findIndex(
+            (page) => page.slug === route.name.replace("tab-", "")
+          )
           const icon = pages?.[index]?.icon
           const { name, provider, size, activeColor, inactiveColor } = icon
           // You can return any component that you like here!
@@ -65,7 +72,18 @@ function BottomBar({ navigation, route, pages }) {
     >
       {Array.isArray(bottomNavPages) &&
         bottomNavPages.map(({ page, index: id }) => {
-          return <Tab.Screen key={id} name={`bottom-${id}`} component={Page} />
+          return (
+            <Tab.Screen
+              key={id}
+              name={`tab-${page.slug}`}
+              options={{
+                title: page.name,
+                headerShown: page.showHeaderBar
+              }}
+            >
+              {(props) => <Page {...props} page={page} />}
+            </Tab.Screen>
+          )
         })}
     </Tab.Navigator>
   )
@@ -79,7 +97,7 @@ export default function Route() {
   const firstBottomNav = pages?.find((page) => page?.addToBottomNav)
 
   if (!data) return null
-
+  console.log({ data })
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -88,7 +106,13 @@ export default function Route() {
         }}
       >
         {firstBottomNav && (
-          <Stack.Screen name="BottomBar">
+          <Stack.Screen
+            name="BottomTab"
+            options={{
+              title: firstBottomNav.name,
+              headerShown: firstBottomNav.showHeaderBar
+            }}
+          >
             {(props) => <BottomBar {...props} pages={pages} />}
           </Stack.Screen>
         )}
@@ -96,7 +120,7 @@ export default function Route() {
           pages.map((page, id) => (
             <Stack.Screen
               key={id}
-              name={`page-${id}`}
+              name={page.slug}
               options={{
                 title: page.name,
                 headerShown: page.showHeaderBar

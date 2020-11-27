@@ -35,6 +35,8 @@ export const Text = ({ title, postContent, ...props }) => {
 
   const { style, ...restProps } = props
 
+  if (!title) return null
+
   return props.isHtml ? (
     Platform.OS === "web" ? (
       <div
