@@ -1,5 +1,5 @@
-//import WooCommerceRestApi from "./WoocommerceApi"
-import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api"
+import WooCommerceRestApi from "./WoocommerceApi"
+// import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api"
 import { config } from "../../config"
 
 const wooapiConfig = {
@@ -8,6 +8,7 @@ const wooapiConfig = {
   consumerKey: config.ck ?? "consumerKey",
   consumerSecret: config.cs ?? "consumerSecret",
   version: "wc/v3",
+  axiosConfig: { headers: {} },
   queryStringAuth: true
 }
 

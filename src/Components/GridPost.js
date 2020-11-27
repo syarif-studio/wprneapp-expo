@@ -23,7 +23,7 @@ export const FlatListComp = ({ data, children, style, ...props }) => {
         data={data}
         keyExtractor={(item) => item?.id?.toString()}
         {...(numColumns > 1 && {
-          columnWrapperStyle: { flex: 1, justifyContent: "space-around" }
+          columnWrapperStyle: { flex: 1, justifyContent: "space-between" }
         })}
         {...flatListProps}
         renderItem={({ item }) => (

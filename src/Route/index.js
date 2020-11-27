@@ -40,12 +40,9 @@ function BottomBar({ navigation, route, pages }) {
     navigation.setOptions({ ...options })
   }, [navigation, route, pages])
 
-  const bottomNavPages = []
-  pages.forEach((page, index) => {
-    if (page?.addToBottomNav) {
-      bottomNavPages.push({ page, index })
-    }
-  })
+  const bottomNavPages = pages
+    .filter((page) => page?.addToBottomNav)
+    .sort((a, b) => a.navPriority - b.navPriority)
 
   return (
     <Tab.Navigator
@@ -71,10 +68,10 @@ function BottomBar({ navigation, route, pages }) {
       })}
     >
       {Array.isArray(bottomNavPages) &&
-        bottomNavPages.map(({ page, index: id }) => {
+        bottomNavPages.map((page) => {
           return (
             <Tab.Screen
-              key={id}
+              key={page.slug}
               name={`tab-${page.slug}`}
               options={{
                 title: page.name,
@@ -97,7 +94,9 @@ export default function Route() {
   const firstBottomNav = pages?.find((page) => page?.addToBottomNav)
 
   if (!data) return null
-  console.log({ data })
+
+  const sortedPages = pages.sort((a, b) => a.navPriority - b.navPriority)
+
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -116,10 +115,10 @@ export default function Route() {
             {(props) => <BottomBar {...props} pages={pages} />}
           </Stack.Screen>
         )}
-        {Array.isArray(pages) &&
-          pages.map((page, id) => (
+        {Array.isArray(sortedPages) &&
+          sortedPages.map((page) => (
             <Stack.Screen
-              key={id}
+              key={page.slug}
               name={page.slug}
               options={{
                 title: page.name,

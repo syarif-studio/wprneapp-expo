@@ -37,15 +37,13 @@ const Page = ({ navigation, route, page }) => {
   const json = page?.json
   const dataJson = json && JSON.parse(json)
 
-  console.log({ page, route })
-
   React.useLayoutEffect(() => {
     const params = route.params
     const title = params?.item?.title?.rendered ?? params?.item?.name
-    if (title) {
+    if (title && page?.dynamicTitle) {
       navigation.setOptions({ title })
     }
-  }, [navigation, route])
+  })
 
   return dataJson ? buildComponent("ROOT", dataJson) : null
 }

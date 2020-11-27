@@ -1,11 +1,11 @@
 import React from "react"
-import { View } from "react-native"
+import { View, Platform } from "react-native"
 import { WebView } from "react-native-webview"
 import { useCart } from "../Hook"
 import { config } from "../../config"
 import { useAsyncStorage } from "@react-native-community/async-storage"
 
-export const WooCheckout = ({ children, ...props }) => {
+export const WooCheckout = (props) => {
   const {
     cart: { items },
     resetCart
@@ -62,11 +62,23 @@ export const WooCheckout = ({ children, ...props }) => {
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
-      <WebView
-        source={{ uri: url }}
-        scalesPageToFit={false}
-        onMessage={handleMessage}
-      />
+      {Platform.OS === "android" ? (
+        <WebView
+          source={{ uri: url }}
+          scalesPageToFit={false}
+          onMessage={handleMessage}
+        />
+      ) : (
+        <iframe
+          id="checkout"
+          title="Checkout"
+          type="text/html"
+          width={props.style?.width}
+          height={props.style?.height}
+          src={url}
+          frameBorder={0}
+        />
+      )}
     </View>
   )
 }

@@ -62,7 +62,7 @@ function useGetOrderData() {
     })
 
     const line_item = line_items?.reduce(
-      (acc, item) => `${acc} ${item?.name} x ${item?.quantity} \n`,
+      (acc, item) => `${acc}${item?.name} x ${item?.quantity} \n`,
       ""
     )
 

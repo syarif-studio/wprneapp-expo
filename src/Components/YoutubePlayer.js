@@ -3,6 +3,7 @@ import { View, Platform } from "react-native"
 import { Button } from "react-native-elements"
 import { usePostContent } from "../Hook"
 import YouTube from "react-native-youtube-iframe"
+//import YouTube from "react-youtube"
 
 export const YoutubePlayer = (props) => {
   const [isLoading, setIsLoading] = React.useState(true)
@@ -44,15 +45,37 @@ export const YoutubePlayer = (props) => {
           )}
         </>
       ) : (
-        <iframe
-          id="player"
-          title="youtube-player"
-          type="text/html"
-          width={props.style?.width}
-          height={props.style?.height}
-          src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&origin=${window.origin}`}
-          frameBorder={0}
-        ></iframe>
+        <>
+          <YouTube
+            key={videoId}
+            videoId={videoId}
+            onStateChange={handleOnStateChange}
+            onReady={handleOnReady}
+            opts={{
+              height: props.style?.height,
+              width: props.style?.width,
+              playerVars: {
+                // https://developers.google.com/youtube/player_parameters
+                autoplay: false
+              }
+            }}
+          />
+          {isLoading && (
+            <Button
+              loading
+              type="clear"
+              containerStyle={{
+                backgroundColor: "black",
+                position: "absolute",
+                height: props.style?.height,
+                width: props.style?.width,
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+              loadingStyle={{ height: 48 }}
+            />
+          )}
+        </>
       )}
     </View>
   )

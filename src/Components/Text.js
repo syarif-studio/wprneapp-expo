@@ -33,7 +33,7 @@ export const Text = ({ title, postContent, ...props }) => {
       : title?.substring(0, props.charLength)
     : title
 
-  const { style, ...restProps } = props
+  const { style } = props
 
   if (!title) return null
 
@@ -68,8 +68,6 @@ export const Text = ({ title, postContent, ...props }) => {
       />
     )
   ) : (
-    <TextUi style={style} {...restProps}>
-      {title}
-    </TextUi>
+    <TextUi style={style}>{title}</TextUi>
   )
 }
