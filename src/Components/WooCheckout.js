@@ -2,10 +2,9 @@ import React from "react"
 import { View, Platform } from "react-native"
 import { WebView } from "react-native-webview"
 import { useCart } from "../Hook"
-import { config } from "../../config"
 import { useAsyncStorage } from "@react-native-community/async-storage"
 
-export const WooCheckout = (props) => {
+export const WooCheckout = ({ checkoutUrl, ...props }) => {
   const {
     cart: { items },
     resetCart
@@ -16,7 +15,7 @@ export const WooCheckout = (props) => {
   const [url, setUrl] = React.useState("")
 
   React.useEffect(() => {
-    let url = config.baseUrl + "checkout/?add-to-cart="
+    let url = checkoutUrl.replace(/\/$/, "") + "/?add-to-cart="
     if (items?.length) {
       items.forEach((item, index) => {
         if (index === items?.length - 1) {
@@ -35,7 +34,7 @@ export const WooCheckout = (props) => {
       })
       setUrl(url)
     }
-  }, [items])
+  }, [items, checkoutUrl])
 
   const readItemFromStorage = React.useCallback(async () => {
     const item = await getItem()

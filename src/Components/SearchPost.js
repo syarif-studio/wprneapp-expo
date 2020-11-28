@@ -75,9 +75,10 @@ export const SearchPost = ({ style, ...props }) => {
       <SearchBar
         onChangeText={updateSearch}
         value={search}
-        lightTheme
+        platform="android"
         showLoading={isLoading}
         containerStyle={style}
+        placeholder="search"
       />
       <SearchPostComp
         searchQuery={searchQuery}
